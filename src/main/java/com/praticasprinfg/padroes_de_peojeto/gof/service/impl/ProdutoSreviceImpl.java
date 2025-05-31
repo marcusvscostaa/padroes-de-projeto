@@ -1,6 +1,5 @@
 package com.praticasprinfg.padroes_de_peojeto.gof.service.impl;
 
-import com.praticasprinfg.padroes_de_peojeto.gof.model.Cliente;
 import com.praticasprinfg.padroes_de_peojeto.gof.model.Produtos;
 import com.praticasprinfg.padroes_de_peojeto.gof.model.ProdutosRepository;
 import com.praticasprinfg.padroes_de_peojeto.gof.service.ProdutoService;
