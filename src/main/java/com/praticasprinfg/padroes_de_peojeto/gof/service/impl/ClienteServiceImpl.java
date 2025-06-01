@@ -6,6 +6,7 @@ import com.praticasprinfg.padroes_de_peojeto.gof.model.Endereco;
 import com.praticasprinfg.padroes_de_peojeto.gof.model.EnderecoRepository;
 import com.praticasprinfg.padroes_de_peojeto.gof.service.ClienteService;
 import com.praticasprinfg.padroes_de_peojeto.gof.service.ViaCepService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,12 +44,38 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
+    @Transactional
     public void atualizar(Long id, Cliente cliente) {
         // Buscar Cliente por ID, caso exista:
-        Optional<Cliente> clienteBd = clienteRepository.findById(id);
-        if (clienteBd.isPresent()) {
-            salvarClienteComCep(cliente);
+        Cliente dadosCliente = clienteRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado com ID: " + id + " para atualização."));
+
+        System.out.println(dadosCliente);
+
+        ;if(cliente.getNome() != null){
+            System.out.println("Nome: " + cliente.getNome());
+            dadosCliente.setNome(cliente.getNome());
         }
+
+        if(cliente.getEndereco().getCep() != null){
+            System.out.println("CEP Antigo"+dadosCliente.getEndereco().getCep());
+
+            Endereco endereco = enderecoRepository.findById(cliente.getEndereco().getCep()).orElseGet(() -> {
+                // Caso não exista, integrar com o ViaCEP e persistir o retorno.
+                Endereco novoEndereco = viaCepService.consultarCep(cliente.getEndereco().getCep());
+                System.out.println("CEP Passado"+novoEndereco);
+
+                return enderecoRepository.save(novoEndereco);
+            });
+
+            dadosCliente.setEndereco(endereco);
+            System.out.println("CEP Passado"+cliente.getEndereco().getCep());
+            System.out.println("CEP Novo"+dadosCliente.getEndereco().getCep());
+        }
+        System.out.println("Dado Novo"+dadosCliente);
+
+        clienteRepository.save(dadosCliente);
+
     }
 
     @Override

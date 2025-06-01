@@ -97,4 +97,14 @@ public class Endereco {
     public void setSiafi(String siafi) {
         this.siafi = siafi;
     }
+
+    @Override
+    public String toString() {
+        return "Endereco{" +
+                "cep='" + cep + '\'' +
+                ", logradouro='" + logradouro + '\'' +
+                ", bairro='" + bairro + '\'' +
+                ", uf='" + uf + '\'' +
+                '}';
+    }
 }
