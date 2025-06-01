@@ -1,5 +1,6 @@
 package com.praticasprinfg.padroes_de_peojeto.gof.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -16,9 +17,10 @@ public class Cliente {
     @JoinColumn(name = "endereco_id")
     private Endereco endereco;
 
-    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "cliente", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
     private List<Vendas> vendas;
 
+    @JsonManagedReference("cliente-vendas")
     public List<Vendas> getVendas() {
         return vendas;
     }

@@ -1,5 +1,6 @@
 package com.praticasprinfg.padroes_de_peojeto.gof.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -26,6 +27,7 @@ public class Vendas {
         this.id = id;
     }
 
+    @JsonBackReference("cliente-vendas")
     public Cliente getCliente() {
         return cliente;
     }
